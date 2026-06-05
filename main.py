@@ -126,24 +126,24 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    # raise SystemExit(main())
-    emb_func = LocalEmbedder()
-    store = EmbeddingStore("test_store", embedding_fn=emb_func, use_chroma=True)
-    doc1 = Document(
-        id="doc1",
-        content="This cat is beautiful.",
-        metadata={"source": "test_doc1.txt"},
-    )
-    doc2 = Document(
-        id="doc2",
-        content="I live in a small house.",
-        metadata={"source": "test_doc2.txt"},
-    )
-    store.add_documents([doc1, doc2])
-    llm = LLM()
-    llm_fn = lambda prompt: llm.generate(prompt)
-    agent = KnowledgeBaseAgent(store=store, llm_fn=llm_fn)
-    question = "What do you know about cats and houses?"
-    answer = agent.answer(question, top_k=2)
-    print("Question:", question)
-    print("Answer:", answer)
+    raise SystemExit(main())
+    # emb_func = LocalEmbedder()
+    # store = EmbeddingStore("test_store", embedding_fn=emb_func, use_chroma=True)
+    # doc1 = Document(
+    #     id="doc1",
+    #     content="This cat is beautiful.",
+    #     metadata={"source": "test_doc1.txt"},
+    # )
+    # doc2 = Document(
+    #     id="doc2",
+    #     content="I live in a small house.",
+    #     metadata={"source": "test_doc2.txt"},
+    # )
+    # store.add_documents([doc1, doc2])
+    # llm = LLM()
+    # llm_fn = lambda prompt: llm.generate(prompt)
+    # agent = KnowledgeBaseAgent(store=store, llm_fn=llm_fn)
+    # question = "What do you know about cats and houses?"
+    # answer = agent.answer(question, top_k=2)
+    # print("Question:", question)
+    # print("Answer:", answer)

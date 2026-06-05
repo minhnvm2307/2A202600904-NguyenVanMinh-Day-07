@@ -1,0 +1,62 @@
+{
+  "propositions": [
+    "Tổ Công tác 970 thuộc Bộ Nông nghiệp và Phát triển nông thôn.",
+    "Tổ Công tác 970 báo cáo về chỉ đạo sản xuất và kết nối cung ứng tiêu thụ nông sản tại các tỉnh, thành phố phía Nam trong điều kiện dịch Covid-19.",
+    "Báo cáo của Tổ Công tác 970 được công bố vào tối 25/7/2021.",
+    "Nguồn cung sản phẩm chăn nuôi tại phía Nam rất dồi dào.",
+    "Đồng bằng sông Cửu Long sản xuất 433 nghìn tấn rau củ mỗi tháng.",
+    "Nguồn rau củ của Đồng bằng sông Cửu Long đủ cung ứng cho 28 triệu dân trong khu vực và TP.HCM.",
+    "Nguồn rau củ của Đồng bằng sông Cửu Long dư khoảng 100.000 tấn mỗi tháng.",
+    "Tỉnh Đồng Nai xuất ra thị trường gần 10.000 con heo mỗi ngày.",
+    "Đồng Nai tiêu thụ nội tỉnh hơn 1.300 con heo mỗi ngày.",
+    "Đồng Nai tiêu thụ nội tỉnh khoảng 15% lượng heo xuất ra mỗi ngày.",
+    "Khoảng 85% lượng heo của Đồng Nai được xuất ra thị trường các tỉnh và TP.HCM.",
+    "Đồng Nai xuất ra thị trường khoảng 100.000 con gà thịt mỗi ngày.",
+    "Đồng Nai tiêu thụ nội tỉnh khoảng 5% lượng gà thịt xuất ra mỗi ngày.",
+    "Khoảng 95% lượng gà thịt của Đồng Nai cung cấp cho TP.HCM và các tỉnh.",
+    "Đến ngày 25/7/2021, lượng thịt gia súc và gia cầm cung cấp cho TP.HCM tương đối ổn định.",
+    "Nhu cầu tiêu thụ thịt gia súc và gia cầm giảm so với trước thời gian thực hiện giãn cách.",
+    "Sản lượng rau màu toàn miền Nam dự kiến từ nay đến cuối năm là 5,7 triệu tấn.",
+    "Mười chín tỉnh phía Nam cung cấp bình quân 560-600 nghìn tấn rau mỗi tháng cho thị trường.",
+    "Đồng bằng sông Cửu Long cung cấp 433 nghìn tấn rau củ mỗi tháng cho thị trường.",
+    "Nguồn rau củ của Đồng bằng sông Cửu Long chủ yếu phục vụ tiêu thụ nội địa.",
+    "Vùng Đồng bằng sông Cửu Long có khoảng 18 triệu người tiêu thụ rau củ.",
+    "TP.HCM có khoảng 10 triệu người tiêu thụ rau củ.",
+    "Nhu cầu tiêu dùng rau củ của Đồng bằng sông Cửu Long và TP.HCM bình quân là 333 nghìn tấn mỗi tháng.",
+    "Nguồn cung rau củ vượt nhu cầu khoảng 100 nghìn tấn mỗi tháng."
+  ],
+  "chunks": {
+    "779ad": {
+      "chunk_id": "779ad",
+      "propositions": [
+        "Tổ Công tác 970 thuộc Bộ Nông nghiệp và Phát triển nông thôn.",
+        "Tổ Công tác 970 báo cáo về chỉ đạo sản xuất và kết nối cung ứng tiêu thụ nông sản tại các tỉnh, thành phố phía Nam trong điều kiện dịch Covid-19.",
+        "Báo cáo của Tổ Công tác 970 được công bố vào tối 25/7/2021.",
+        "Nguồn cung sản phẩm chăn nuôi tại phía Nam rất dồi dào.",
+        "Đồng bằng sông Cửu Long sản xuất 433 nghìn tấn rau củ mỗi tháng.",
+        "Nguồn rau củ của Đồng bằng sông Cửu Long đủ cung ứng cho 28 triệu dân trong khu vực và TP.HCM.",
+        "Nguồn rau củ của Đồng bằng sông Cửu Long dư khoảng 100.000 tấn mỗi tháng.",
+        "Tỉnh Đồng Nai xuất ra thị trường gần 10.000 con heo mỗi ngày.",
+        "Đồng Nai tiêu thụ nội tỉnh hơn 1.300 con heo mỗi ngày.",
+        "Đồng Nai tiêu thụ nội tỉnh khoảng 15% lượng heo xuất ra mỗi ngày.",
+        "Khoảng 85% lượng heo của Đồng Nai được xuất ra thị trường các tỉnh và TP.HCM.",
+        "Đồng Nai xuất ra thị trường khoảng 100.000 con gà thịt mỗi ngày.",
+        "Đồng Nai tiêu thụ nội tỉnh khoảng 5% lượng gà thịt xuất ra mỗi ngày.",
+        "Khoảng 95% lượng gà thịt của Đồng Nai cung cấp cho TP.HCM và các tỉnh.",
+        "Đến ngày 25/7/2021, lượng thịt gia súc và gia cầm cung cấp cho TP.HCM tương đối ổn định.",
+        "Nhu cầu tiêu thụ thịt gia súc và gia cầm giảm so với trước thời gian thực hiện giãn cách.",
+        "Sản lượng rau màu toàn miền Nam dự kiến từ nay đến cuối năm là 5,7 triệu tấn.",
+        "Mười chín tỉnh phía Nam cung cấp bình quân 560-600 nghìn tấn rau mỗi tháng cho thị trường.",
+        "Đồng bằng sông Cửu Long cung cấp 433 nghìn tấn rau củ mỗi tháng cho thị trường.",
+        "Nguồn rau củ của Đồng bằng sông Cửu Long chủ yếu phục vụ tiêu thụ nội địa.",
+        "Vùng Đồng bằng sông Cửu Long có khoảng 18 triệu người tiêu thụ rau củ.",
+        "TP.HCM có khoảng 10 triệu người tiêu thụ rau củ.",
+        "Nhu cầu tiêu dùng rau củ của Đồng bằng sông Cửu Long và TP.HCM bình quân là 333 nghìn tấn mỗi tháng.",
+        "Nguồn cung rau củ vượt nhu cầu khoảng 100 nghìn tấn mỗi tháng."
+      ],
+      "title": "Nguồn cung, nhu cầu và phân phối nông sản thực phẩm theo vùng",
+      "summary": "Báo cáo của cơ quan nông nghiệp về điều phối sản xuất, nguồn cung, nhu cầu và phân phối nông sản-thực phẩm theo thời gian, địa phương và bối cảnh dịch bệnh; thêm số liệu sản lượng, dư thừa, dân số tiêu thụ, tiêu thụ nội địa/nội tỉnh và luồng cung ứng liên tỉnh của rau củ, gia súc, gia cầm.",
+      "chunk_index": 0
+    }
+  }
+}
