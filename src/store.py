@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import uuid
 from typing import Any, Callable
 
 from .chunking import _dot
@@ -19,10 +20,10 @@ class EmbeddingStore:
         self,
         collection_name: str = "documents",
         embedding_fn: Callable[[str], list[float]] | None = None,
+        use_chroma: bool = True,
     ) -> None:
         self._embedding_fn = embedding_fn or _mock_embed
-        self._collection_name = collection_name
-        self._use_chroma = False
+        self._use_chroma = use_chroma
         self._store: list[dict[str, Any]] = []
         self._collection = None
         self._next_index = 0
@@ -31,11 +32,12 @@ class EmbeddingStore:
             import chromadb  # noqa: F401
 
             client = chromadb.Client()
-            self._use_chroma = True
+            self._collection_name = f"{collection_name}_{uuid.uuid4().hex}"
             self._collection = client.get_or_create_collection(name=self._collection_name)
         except Exception:
             self._use_chroma = False
             self._collection = None
+            self._collection_name = collection_name
 
     def _make_record(self, doc: Document) -> dict[str, Any]:
         if not doc.content:
@@ -48,12 +50,20 @@ class EmbeddingStore:
             "metadata": doc.metadata,
         }
 
+    def _record_to_result(self, record: dict[str, Any], score: float) -> dict[str, Any]:
+        return {
+            "id": record["id"],
+            "score": score,
+            "content": record["doc"].content,
+            "metadata": record["metadata"],
+        }
+
     def _search_records(self, query: str, records: list[dict[str, Any]], top_k: int) -> list[dict[str, Any]]:
         query_embedding = self._embedding_fn(query)
         scored_records = []
         for record in records:
             score = _dot(query_embedding, record["embedding"])
-            scored_records.append({"score": score, **record})
+            scored_records.append(self._record_to_result(record, score))
         scored_records.sort(key=lambda x: x["score"], reverse=True)
         return scored_records[:top_k]
 
@@ -65,15 +75,25 @@ class EmbeddingStore:
         For in-memory: append dicts to self._store
         """
         records = [self._make_record(doc) for doc in docs if doc.content]
+        if not records:
+            return
         if not self._use_chroma:
-            self._store = records
+            self._store.extend(records)
         else:
+            unique_ids = []
+            metadatas = []
+            for offset, record in enumerate(records):
+                unique_ids.append(f"{record['id']}::{self._next_index + offset}")
+                metadata = dict(record["metadata"])
+                metadata["document_id"] = record["id"]
+                metadatas.append(metadata or {"document_id": record["id"]})
             self._collection.add(
-                ids=[record["id"] for record in records],
-                metadatas=[record["metadata"] for record in records],
+                ids=unique_ids,
+                metadatas=metadatas,
                 documents=[record["doc"].content for record in records],
                 embeddings=[record["embedding"] for record in records],
             )
+            self._next_index += len(records)
 
     def search(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
         """
@@ -88,7 +108,21 @@ class EmbeddingStore:
                 query_embeddings=[self._embedding_fn(query)],
                 n_results=top_k,
             )
-            return results
+            documents = results.get("documents", [[]])[0]
+            ids = results.get("ids", [[]])[0]
+            metadatas = results.get("metadatas", [[]])[0]
+            distances = results.get("distances", [[]])[0]
+            normalized_results: list[dict[str, Any]] = []
+            for index, content in enumerate(documents):
+                normalized_results.append(
+                    {
+                        "id": metadatas[index].get("document_id", ids[index] if index < len(ids) else None),
+                        "score": -distances[index] if index < len(distances) else 0.0,
+                        "content": content,
+                        "metadata": metadatas[index] if index < len(metadatas) else {},
+                    }
+                )
+            return normalized_results
 
     def get_collection_size(self) -> int:
         """Return the total number of stored chunks."""
@@ -105,20 +139,34 @@ class EmbeddingStore:
         """
         if not self._use_chroma:
             filtered_records = [
-                record 
-                for record in self._store 
-                    if metadata_filter is None 
-                    or all(record["metadata"].get(k) == v 
-                           for k, v in metadata_filter.items())
+                record
+                for record in self._store
+                if metadata_filter is None
+                or all(record["metadata"].get(k) == v
+                       for k, v in metadata_filter.items())
             ]
-            return filtered_records[:top_k]
+            return [self._record_to_result(record, 0.0) for record in filtered_records[:top_k]]
         else:
             results = self._collection.query(
                 query_embeddings=[self._embedding_fn(query)],
                 n_results=top_k,
                 where=metadata_filter,
             )
-            return results
+            documents = results.get("documents", [[]])[0]
+            ids = results.get("ids", [[]])[0]
+            metadatas = results.get("metadatas", [[]])[0]
+            distances = results.get("distances", [[]])[0]
+            normalized_results: list[dict[str, Any]] = []
+            for index, content in enumerate(documents):
+                normalized_results.append(
+                    {
+                        "id": metadatas[index].get("document_id", ids[index] if index < len(ids) else None),
+                        "score": -distances[index] if index < len(distances) else 0.0,
+                        "content": content,
+                        "metadata": metadatas[index] if index < len(metadatas) else {},
+                    }
+                )
+            return normalized_results
 
     def delete_document(self, doc_id: str) -> bool:
         """
@@ -126,10 +174,10 @@ class EmbeddingStore:
 
         Returns True if any chunks were removed, False otherwise.
         """
-        init_len = len(self._store)
+        init_len = self.get_collection_size()
         if not self._use_chroma:
             self._store = [record for record in self._store if record["id"] != doc_id]
-            return len(self._store) < init_len
+            return self.get_collection_size() < init_len
         else:
-            self._collection.delete(ids=[doc_id])
-            return len(self._collection) < init_len
+            self._collection.delete(where={"document_id": doc_id})
+            return self.get_collection_size() < init_len

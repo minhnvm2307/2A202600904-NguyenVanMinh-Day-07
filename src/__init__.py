@@ -17,6 +17,7 @@ from .embeddings import (
 )
 from .models import Document
 from .store import EmbeddingStore
+from .llm import LLM
 
 __all__ = [
     "Document",
@@ -34,4 +35,5 @@ __all__ = [
     "LOCAL_EMBEDDING_MODEL",
     "OPENAI_EMBEDDING_MODEL",
     "EMBEDDING_PROVIDER_ENV",
+    "LLM"
 ]
