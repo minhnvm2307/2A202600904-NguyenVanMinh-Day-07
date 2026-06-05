@@ -126,24 +126,36 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
-    # emb_func = LocalEmbedder()
-    # store = EmbeddingStore("test_store", embedding_fn=emb_func, use_chroma=True)
-    # doc1 = Document(
-    #     id="doc1",
-    #     content="This cat is beautiful.",
-    #     metadata={"source": "test_doc1.txt"},
-    # )
-    # doc2 = Document(
-    #     id="doc2",
-    #     content="I live in a small house.",
-    #     metadata={"source": "test_doc2.txt"},
-    # )
-    # store.add_documents([doc1, doc2])
-    # llm = LLM()
-    # llm_fn = lambda prompt: llm.generate(prompt)
-    # agent = KnowledgeBaseAgent(store=store, llm_fn=llm_fn)
-    # question = "What do you know about cats and houses?"
-    # answer = agent.answer(question, top_k=2)
-    # print("Question:", question)
-    # print("Answer:", answer)
+    # raise SystemExit(main())
+    emb_func = LocalEmbedder()
+    store = EmbeddingStore("test_store", embedding_fn=emb_func, use_chroma=True)
+    import pandas as pd
+    from src.chunking import ChunkingStrategyComparator
+    df = pd.read_csv("data/test.csv")
+    
+
+    docs = [
+        Document(
+            id=str(i),
+            content=row["content"],
+            metadata={"source": "test.csv", "index": i,'title': row['title']},
+        )
+        for i, row in df.iterrows()
+    ]
+    store.add_documents(docs)
+    chunk_comparer = ChunkingStrategyComparator()
+    eval_results = []
+    for doc in docs:
+        result = chunk_comparer.compare(doc.content)
+        eval_results.append({"id": doc.id, "title": doc.metadata['title'], "result": result})
+    # Mean score for each strategy
+    print("=== Evaluation Results ===")
+    for res in eval_results:
+        print(f"Document ID: {res['id']} - Title: {res['title']}")
+        for strategy, metrics in res["result"].items():
+            print(f"  Strategy: {strategy}")
+            print(f"    Chunk Count: {metrics['count']}")
+            print(f"    Avg Length: {metrics['avg_length']}")
+        print("-" * 40)
+
+# | Tài liệu | Strategy | Chunk Count | Avg Length | Preserves Context? |
