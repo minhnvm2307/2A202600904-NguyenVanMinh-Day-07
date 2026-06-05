@@ -121,5 +121,21 @@ class ChunkingStrategyComparator:
     """Run all built-in chunking strategies and compare their results."""
 
     def compare(self, text: str, chunk_size: int = 200) -> dict:
-        # TODO: call each chunker, compute stats, return comparison dict
-        raise NotImplementedError("Implement ChunkingStrategyComparator.compare")
+        strategies = {
+            "fixed_size": FixedSizeChunker(chunk_size=chunk_size),
+            "sentence": SentenceChunker(),
+            "recursive": RecursiveChunker(chunk_size=chunk_size),
+        }
+        results = {}
+        for name, strategy in strategies.items():
+            chunks = strategy.chunk(text)
+            chunk_lengths = [len(chunk) for chunk in chunks]
+            results[name] = {
+                "num_chunks": len(chunks),
+                "chunks": chunks,
+                "chunk_lengths": chunk_lengths,
+                "min_chunk_length": min(chunk_lengths, default=0),
+                "max_chunk_length": max(chunk_lengths, default=0),
+                "avg_chunk_length": sum(chunk_lengths) / len(chunk_lengths) if chunk_lengths else 0,
+            }
+        return results
